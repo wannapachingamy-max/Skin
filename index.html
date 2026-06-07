@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skin Grid Generator</title>
+    <title>Skin Grid Generator (Fixed)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
@@ -49,7 +49,6 @@
         .file-input-btn:hover { background-color: #4338ca; }
         input[type="file"] { display: none; }
 
-        /* พื้นที่แสดงตาราง Grid (เรียงแถวละ 6 รูปตามต้นฉบับ RoV) */
         .grid-wrapper {
             width: 100%;
             max-width: 800px;
@@ -78,7 +77,7 @@
             width: 100%;
             height: auto;
             display: block;
-            object-fit: contain; /* โชว์สัดส่วนจริง ไม่บีบรูปบนหน้าเว็บ */
+            object-fit: contain;
         }
 
         .action-panel {
@@ -136,12 +135,10 @@
 
             if (files.length === 0) return;
 
-            let loadedCount = 0;
-
             files.forEach((file) => {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    // 1. แสดงผลพรีวิวบนเว็บ
+                    // 1. วาดพรีวิวบนหน้าเว็บ
                     const item = document.createElement('div');
                     item.classList.add('skin-item');
                     const img = document.createElement('img');
@@ -149,16 +146,12 @@
                     item.appendChild(img);
                     previewGrid.appendChild(item);
 
-                    // 2. โหลดรูปเก็บไว้ในอาร์เรย์เพื่อไปวาดลง Canvas
+                    // 2. โหลดรูปเข้า Array เพื่อเตรียมวาดลง Canvas โดยปลดล็อกเรื่อง Security
                     const canvasImg = new Image();
+                    canvasImg.crossOrigin = "anonymous"; // ป้องกันปัญหาบั๊กดาวน์โหลดไม่ได้
                     canvasImg.src = event.target.result;
                     canvasImg.onload = function() {
-                        loadedImages.push({
-                            img: canvasImg,
-                            width: canvasImg.width,
-                            height: canvasImg.height
-                        });
-                        loadedCount++;
+                        loadedImages.push(canvasImg);
                     };
                 };
                 reader.readAsDataURL(file);
@@ -174,18 +167,16 @@
             const canvas = document.getElementById('canvas-export');
             const ctx = canvas.getContext('2d');
 
-            // ตั้งค่าขนาดบอร์ดสำหรับเซฟรูปภาพ (กำหนดความกว้างมาตรฐานที่ 1200px)
             const canvasWidth = 1200; 
-            const cols = 6; // เรียงแถวละ 6 รูปตามที่คุณต้องการ
-            const gap = 8;  // ช่องว่างระหว่างรูป
-            const padding = 12; // ขอบดำรอบนอกสุด
+            const cols = 6; 
+            const gap = 8;  
+            const padding = 12; 
             
-            // คำนวณความกว้างของแต่ละช่องในตาราง
             const itemWidth = (canvasWidth - (padding * 2) - (gap * (cols - 1))) / cols;
             
-            // สุ่มอ้างอิงความสูงจากสัดส่วนรูปแรก เพื่อใช้เป็นความสูงมาตรฐานของช่อง Grid
+            // ดึงสัดส่วนความสูงจากรูปแรกที่โหลดเสร็จมาคำนวณสัดส่วน Grid
             const sample = loadedImages[0];
-            const itemHeight = itemWidth * (sample.height / sample.width);
+            const itemHeight = itemWidth * (sample.naturalHeight / sample.naturalWidth);
 
             const rows = Math.ceil(loadedImages.length / cols);
             const canvasHeight = (padding * 2) + (rows * itemHeight) + ((rows - 1) * gap);
@@ -193,5 +184,32 @@
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
 
-            // เท
+            // เทพื้นหลังสีดำ
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
+            // วาดรูปลงบน Canvas ใหญ่แบบรักษาสัดส่วน
+            loadedImages.forEach((img, index) => {
+                const col = index % cols;
+                const row = Math.floor(index / cols);
+
+                const x = padding + (col * (itemWidth + gap));
+                const y = padding + (row * (itemHeight + gap));
+
+                ctx.drawImage(img, x, y, itemWidth, itemHeight);
+            });
+
+            // ดาวน์โหลดไฟล์ภาพสำเร็จรูป
+            try {
+                const link = document.createElement('a');
+                link.download = 'skin-grid-collection.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (error) {
+                alert("เกิดข้อผิดพลาดในการเซฟภาพ กรุณาลองเปิดบนเบราว์เซอร์อื่น เช่น Google Chrome หรือ Safari ครับ");
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
