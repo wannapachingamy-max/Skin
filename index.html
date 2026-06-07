@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ID Shop - Skin Grid Generator</title>
+    <title>Skin Grid Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -19,296 +19,179 @@
         body {
             background-color: #0f1115;
             color: #ffffff;
-            padding: 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
-        h1 {
-            margin-bottom: 20px;
-            color: #ffb703;
-        }
-
-        /* โซนตั้งค่า/กรอกข้อมูล */
         .control-panel {
-            background-color: #1a1d24;
-            padding: 20px;
-            border-radius: 12px;
             width: 100%;
-            max-width: 600px;
-            margin-bottom: 30px;
-            border: 1px solid #2e3440;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #cbd5e1;
-            font-size: 0.9rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            background-color: #0f1115;
-            border: 1px solid #475569;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 1rem;
+            max-width: 800px;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
         .file-input-btn {
-            display: block;
-            background-color: #2563eb;
+            display: inline-block;
+            background-color: #4f46e5;
             color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 6px;
+            padding: 14px 30px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            margin-top: 10px;
+            font-size: 1rem;
             transition: background 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
 
-        .file-input-btn:hover { background-color: #1d4ed8; }
+        .file-input-btn:hover { background-color: #4338ca; }
         input[type="file"] { display: none; }
 
-        /* โซนแสดงตัวอย่าง (Preview) */
-        .preview-title {
-            margin-bottom: 10px;
-            color: #94a3b8;
-        }
-
-        #preview-container {
+        /* พื้นที่แสดงตาราง Grid (เรียงแถวละ 6 รูปตามต้นฉบับ RoV) */
+        .grid-wrapper {
+            width: 100%;
+            max-width: 800px;
             background-color: #000000;
-            width: 600px; /* ล็อกความกว้างให้ได้สัดส่วนการ์ดรีวิว */
-            padding: 20px;
-            border: 2px dashed #475569;
+            padding: 10px;
             border-radius: 8px;
-            overflow: hidden;
+            border: 1px solid #232731;
         }
 
-        /* ตกแต่งส่วนหัวในการ์ดรีวิว (เลียนแบบไฟล์ 12565.jpg) */
-        .shop-header {
-            margin-bottom: 20px;
-            border-bottom: 2px solid #222;
-            padding-bottom: 15px;
-        }
-        .shop-name { font-size: 1.8rem; font-weight: 700; color: #fff; }
-        .shop-stats { font-size: 1.4rem; color: #4ade80; margin: 5px 0; }
-        .shop-stats span { color: #38bdf8; }
-        .shop-price { font-size: 2rem; font-weight: 700; color: #ffb703; text-align: center; margin-top: 10px; }
-
-        /* ตารางสกินแนว Grid */
         .skin-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr); /* เรียงแถวละ 6 รูปเปลี่ยนได้ตามใจชอบ */
-            gap: 4px;
-            background-color: #111;
-            padding: 5px;
-            border-radius: 4px;
+            grid-template-columns: repeat(6, 1fr); 
+            gap: 6px;
         }
 
         .skin-item {
-            aspect-ratio: 1 / 1;
-            background-color: #222;
-            overflow: hidden;
+            width: 100%;
+            background-color: #111;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .skin-item img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            display: block;
+            object-fit: contain; /* โชว์สัดส่วนจริง ไม่บีบรูปบนหน้าเว็บ */
         }
 
-        /* ปุ่มดาวน์โหลดภาพใหญ่ */
-        .download-zone {
-            margin-top: 25px;
+        .action-panel {
+            margin-top: 30px;
             text-align: center;
         }
 
-        .btn-generate {
+        .btn-download {
             background-color: #10b981;
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 14px 40px;
             font-size: 1.1rem;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
             transition: background 0.2s;
         }
 
-        .btn-generate:hover { background-color: #059669; }
+        .btn-download:hover { background-color: #059669; }
         
-        /* ซ่อน Canvas จริงๆ ไว้เบื้องหลัง */
         canvas { display: none; }
     </style>
 </head>
 <body>
 
-    <h1>ID Review Grid Generator</h1>
-
-    <!-- 1. ส่วนควบคุมกรอกข้อมูล -->
     <div class="control-panel">
-        <div class="form-group">
-            <label>ชื่อร้าน / ชื่อเครดิต (เช่น FB: NgoNge)</label>
-            <input type="text" id="input-shop" value="My Shop">
-        </div>
-        <div class="form-group">
-            <label>ข้อมูลสถิติ (เช่น HERO 38 | SKIN 41)</label>
-            <input type="text" id="input-stats" value="HERO 50 | SKIN 120">
-        </div>
-        <div class="form-group">
-            <label>ราคา (เช่น ราคา 1,450 บาท)</label>
-            <input type="text" id="input-price" value="ราคา 1,500 บาท">
-        </div>
-        
         <label class="file-input-btn">
-            📷 คลิกเพื่อเลือกรูปภาพสกินทั้งหมดพร้อมกัน
+            📷 เลือกรูปภาพสกินทั้งหมด
             <input type="file" id="image-loader" accept="image/*" multiple>
         </label>
     </div>
 
-    <!-- 2. ส่วนแสดงหน้าตาเว็บแบบเรียลไทม์ -->
-    <h3 class="preview-title">ตัวอย่างหน้าตาที่จะถูกเซฟออกมา:</h3>
-    <div id="preview-container">
-        <div class="shop-header">
-            <div class="shop-name" id="preview-shop">My Shop</div>
-            <div class="shop-stats" id="preview-stats">HERO 50 | SKIN 120</div>
-            <div class="shop-price" id="preview-price">ราคา 1,500 บาท</div>
-        </div>
+    <div class="grid-wrapper">
         <div class="skin-grid" id="preview-grid">
-            <!-- รูปสกินที่เลือกจะมาโชว์ตรงนี้เป็นตาราง Grid -->
-        </div>
+            </div>
     </div>
 
-    <!-- 3. ปุ่มรวมร่างดาวน์โหลดรูปภาพ -->
-    <div class="download-zone">
-        <button class="btn-generate" id="btn-download">📥 ดาวน์โหลดรูปภาพสรุป (ภาพเดียวจบ)</button>
+    <div class="action-panel">
+        <button class="btn-download" id="btn-download">📥 ดาวน์โหลดรูปตารางรวม</button>
     </div>
 
-    <!-- ลับเฉพาะระบบ: ตัวช่วยวาดรูปเพื่อบันทึกไฟล์ -->
     <canvas id="canvas-export"></canvas>
 
     <script>
         const imageLoader = document.getElementById('image-loader');
         const previewGrid = document.getElementById('preview-grid');
-        
-        // ผูกข้อความจาก Input ไปแสดงผลที่ตัวอย่างรีวิว
-        const fields = ['shop', 'stats', 'price'];
-        fields.forEach(field => {
-            document.getElementById(`input-${field}`).addEventListener('input', (e) => {
-                document.getElementById(`preview-${field}`).innerText = e.target.value;
-            });
-        });
-
         let loadedImages = [];
 
-        // ฟังก์ชันรับรูปภาพและแสดงผลแนว Grid
         imageLoader.addEventListener('change', function(e) {
             previewGrid.innerHTML = '';
             loadedImages = [];
-            const files = e.target.files;
+            const files = Array.from(e.target.files);
 
-            if (files) {
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        // สร้างแสดงผลในหน้าเว็บ (Preview)
-                        const item = document.createElement('div');
-                        item.classList.add('skin-item');
-                        const img = document.createElement('img');
-                        img.src = event.target.result;
-                        item.appendChild(img);
-                        previewGrid.appendChild(item);
+            if (files.length === 0) return;
 
-                        // เก็บข้อมูลรูปไว้ใช้วาดบน Canvas ตอนดาวน์โหลด
-                        const canvasImg = new Image();
-                        canvasImg.src = event.target.result;
-                        loadedImages.push(canvasImg);
-                    }
-                    reader.readAsDataURL(file);
-                });
-            }
+            let loadedCount = 0;
+
+            files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // 1. แสดงผลพรีวิวบนเว็บ
+                    const item = document.createElement('div');
+                    item.classList.add('skin-item');
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    item.appendChild(img);
+                    previewGrid.appendChild(item);
+
+                    // 2. โหลดรูปเก็บไว้ในอาร์เรย์เพื่อไปวาดลง Canvas
+                    const canvasImg = new Image();
+                    canvasImg.src = event.target.result;
+                    canvasImg.onload = function() {
+                        loadedImages.push({
+                            img: canvasImg,
+                            width: canvasImg.width,
+                            height: canvasImg.height
+                        });
+                        loadedCount++;
+                    };
+                };
+                reader.readAsDataURL(file);
+            });
         });
 
-        // ฟังก์ชันรวมร่างภาพและดาวน์โหลด (เมื่อกดปุ่ม)
         document.getElementById('btn-download').addEventListener('click', function() {
             if (loadedImages.length === 0) {
-                alert('กรุณาเลือกรูปภาพสกินก่อนครับ!');
+                alert('กรุณาเลือกรูปภาพก่อนครับ!');
                 return;
             }
 
             const canvas = document.getElementById('canvas-export');
             const ctx = canvas.getContext('2d');
 
-            // ตั้งค่าขนาดและสัดส่วนของรูปที่จะเซฟออกไป
-            const canvasWidth = 800; 
-            const gridCols = 6; // บังคับให้ตารางมี 6 คอลัมน์ต่อแถวแบบคงที่
-            const padding = 20;
-            const itemSize = (canvasWidth - (padding * 2) - (4 * (gridCols - 1))) / gridCols;
+            // ตั้งค่าขนาดบอร์ดสำหรับเซฟรูปภาพ (กำหนดความกว้างมาตรฐานที่ 1200px)
+            const canvasWidth = 1200; 
+            const cols = 6; // เรียงแถวละ 6 รูปตามที่คุณต้องการ
+            const gap = 8;  // ช่องว่างระหว่างรูป
+            const padding = 12; // ขอบดำรอบนอกสุด
             
-            const gridRows = Math.ceil(loadedImages.length / gridCols);
-            const headerHeight = 220; // พื้นที่สำหรับวาดข้อความหัวข้อ
-            const canvasHeight = headerHeight + (gridRows * (itemSize + 4)) + padding;
+            // คำนวณความกว้างของแต่ละช่องในตาราง
+            const itemWidth = (canvasWidth - (padding * 2) - (gap * (cols - 1))) / cols;
+            
+            // สุ่มอ้างอิงความสูงจากสัดส่วนรูปแรก เพื่อใช้เป็นความสูงมาตรฐานของช่อง Grid
+            const sample = loadedImages[0];
+            const itemHeight = itemWidth * (sample.height / sample.width);
+
+            const rows = Math.ceil(loadedImages.length / cols);
+            const canvasHeight = (padding * 2) + (rows * itemHeight) + ((rows - 1) * gap);
 
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
 
-            // วาดพื้นหลังสีดำทึบ
-            ctx.fillStyle = '#0a0b0d';
-            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-            // วาดข้อความหัวข้อลงภาพ (ดึงจากฟอนต์เครื่องหรือฟอนต์ระบบเริ่มต้น)
-            ctx.textBaseline = 'top';
-            
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 36px sans-serif';
-            ctx.fillText(document.getElementById('input-shop').value, padding, padding);
-
-            ctx.fillStyle = '#4ade80';
-            ctx.font = 'bold 28px sans-serif';
-            ctx.fillText(document.getElementById('input-stats').value, padding, padding + 55);
-
-            ctx.fillStyle = '#ffb703';
-            ctx.font = 'bold 42px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(document.getElementById('input-price').value, canvasWidth / 2, padding + 120);
-
-            // วาดตาราง Grid สกินลงในภาพใหญ่
-            ctx.textAlign = 'left'; // รีเซ็ตคืนค่า
-            let currentImgIndex = 0;
-
-            for (let row = 0; row < gridRows; row++) {
-                for (let col = 0; col < gridCols; col++) {
-                    if (currentImgIndex >= loadedImages.length) break;
-
-                    const x = padding + (col * (itemSize + 4));
-                    const y = headerHeight + (row * (itemSize + 4));
-
-                    // วาดรูปสกินแต่ละอันลงในพิกัดของตาราง
-                    ctx.drawImage(loadedImages[currentImgIndex], x, y, itemSize, itemSize);
-                    currentImgIndex++;
-                }
-            }
-
-            // ทำการสั่งดาวน์โหลดไฟล์ภาพรวมร่างออกมาทันที
-            const link = document.createElement('a');
-            link.download = 'id-review-summary.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        });
-    </script>
-</body>
-</html>
+            // เท
 
