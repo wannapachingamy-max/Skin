@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Skin Collection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* รีเซ็ตค่าพื้นฐาน */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        /* ตั้งค่าธีมมืด (Dark Mode) */
+        body {
+            background-color: #121214;
+            color: #e1e1e6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ส่วนหัวของเว็บ */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #202024 0%, #121214 100%);
+            border-bottom: 1px solid #29292e;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #00adb5;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #a8a8b3;
+            font-weight: 300;
+        }
+
+        /* จัดหน้าแบบ Grid (ตาราง) */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            flex: 1;
+        }
+
+        /* รูปแบบของการ์ดใส่สกิน */
+        .skin-card {
+            background-color: #202024;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #29292e;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* เอฟเฟกต์ตอนเอาเมาส์มาชี้ที่การ์ด */
+        .skin-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 173, 181, 0.2);
+            border-color: #00adb5;
+        }
+
+        /* ส่วนแสดงรูปภาพ */
+        .skin-image {
+            width: 100%;
+            height: 320px;
+            background-color: #1a1a1e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .skin-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .skin-card:hover .skin-image img {
+            transform: scale(1.05);
+        }
+
+        /* ส่วนข้อมูลรายละเอียด */
+        .skin-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .skin-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .skin-info p {
+            font-size: 0.9rem;
+            color: #a8a8b3;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        /* ปุ่มดาวน์โหลด */
+        .download-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            background-color: #00adb5;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #008c95;
+        }
+
+        /* ส่วนท้ายเว็บ */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #202024;
+            color: #737380;
+            font-size: 0.85rem;
+            border-top: 1px solid #29292e;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Skin Collection</h1>
+        <p>คลังสะสมสกินตัวละครของฉัน</p>
+    </header>
+
+    <main class="container">
+        <div class="skin-card">
+            <div class="skin-image">
+                <img src="skin1.png" alt="Skin 1" onerror="this.src='https://placehold.co/300x400/2a2d32/ffffff?text=No+Image'">
+            </div>
+            <div class="skin-info">
+                <h3>Cool Character 01</h3>
+                <p>สกินแนวเท่ๆ โทนสีดำ-แดง</p>
+                <a href="skin1.png" download class="download-btn">ดาวน์โหลดสกิน</a>
+            </div>
+        </div>
+
+        <div class="skin-card">
+            <div class="skin-image">
+                <img src="skin2.png" alt="Skin 2" onerror="this.src='https://placehold.co/300x400/2a2d32/ffffff?text=No+Image'">
+            </div>
+            <div class="skin-info">
+                <h3>Cyberpunk Vibe</h3>
+                <p>สกินสไตล์นีออนแห่งอนาคต</p>
+                <a href="skin2.png" download class="download-btn">ดาวน์โหลดสกิน</a>
+            </div>
+        </div>
+
+        <div class="skin-card">
+            <div class="skin-image">
+                <img src="skin3.png" alt="Skin 3" onerror="this.src='https://placehold.co/300x400/2a2d32/ffffff?text=No+Image'">
+            </div>
+            <div class="skin-info">
+                <h3>Cute Hoodie</h3>
+                <p>สกินน้องเสื้อฮู้ดสุดน่ารัก</p>
+                <a href="skin3.png" download class="download-btn">ดาวน์โหลดสกิน</a>
+            </div>
+        </div>
+
+        <div class="skin-card">
+            <div class="skin-image">
+                <img src="skin4.png" alt="Skin 4" onerror="this.src='https://placehold.co/300x400/2a2d32/ffffff?text=No+Image'">
+            </div>
+            <div class="skin-info">
+                <h3>Fantasy Knight</h3>
+                <p>อัศวินชุดเกราะสุดอลังการ</p>
+                <a href="skin4.png" download class="download-btn">ดาวน์โหลดสกิน</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 My Skin Gallery. Powered by GitHub Pages</p>
+    </footer>
+
+</body>
+</html>
+
